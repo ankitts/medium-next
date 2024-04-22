@@ -23,7 +23,7 @@ export default function Login(){
                     <button className="bg-gray-400 hover:bg-gray-700 w-72 rounded-md h-8">Login</button>
                 </div>
                 <div className="text-white">
-                    Don't have an account?
+                    Dont have an account?
                     <Link href="/signup" className="ml-2 hover:text-green-500 underline"> Create one!</Link>
                 </div>
             </div>
