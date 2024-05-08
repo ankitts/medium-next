@@ -1,6 +1,25 @@
+"use client"
+
+import { signin } from "@/app/actions/user";
+import { log } from "console";
 import Link from "next/link";
+import { useState } from "react";
+
+
 
 export default function Login(){
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    async function onclickHandler(){
+        const response = await signin(username, password);
+        if(response.token){
+            localStorage.setItem("token", response.token)
+        }
+        console.log(response);
+    }
+
     return <div className="bg-gray-400 flex justify-center h-screen">
         <div className="flex flex-col justify-center">
             <div className="bg-slate-950 w-80 h-max text-center rounded-lg p-4 ">
@@ -10,17 +29,17 @@ export default function Login(){
                 <div className="my-4 text-left">
                     <div className="text-white">Username</div>
                     <div>
-                        <input className="rounded-sm w-full h-8 pl-1" type="text" placeholder="johndoe@example.com"></input>
+                        <input onChange={(e)=>setUsername(e.target.value)} className="rounded-sm w-full h-8 pl-1" type="text" placeholder="johndoe@example.com"></input>
                     </div>
                 </div>
                 <div className="my-4 text-left">
                     <div className="text-white">Password</div>
                     <div>
-                        <input className="rounded-sm w-full h-8 pl-1" type="text" placeholder="123456"></input>
+                        <input onChange={(e)=>setPassword(e.target.value)} className="rounded-sm w-full h-8 pl-1" type="text" placeholder="123456"></input>
                     </div>
                 </div>
                 <div className="my-4">
-                    <button className="bg-gray-400 hover:bg-gray-700 w-72 rounded-md h-8">Login</button>
+                    <button onClick={onclickHandler} className="bg-gray-400 hover:bg-gray-700 w-72 rounded-md h-8">Login</button>
                 </div>
                 <div className="text-white">
                     Dont have an account?
