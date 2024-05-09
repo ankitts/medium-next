@@ -1,16 +1,23 @@
 "use client"
 
 import { writeBlog } from "@/app/actions/blog";
+import { userAtom } from "@/app/atoms/userAtom";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 
 export default function WriteBlog() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [user, setUser] = useRecoilState(userAtom);
+  const router = useRouter();
 
   async function onclickHandler(){
-    const response = await writeBlog(title, content);
-    console.log(response);
+    console.log(user.id);
+    const response = await writeBlog(title, content, user.id);
+    
+    router.push('/blogs');
   }
 
   return (

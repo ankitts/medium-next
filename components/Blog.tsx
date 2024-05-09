@@ -1,14 +1,19 @@
+"use client"
+
 import { getBlog } from "@/app/actions/blog";
+import { userAtom } from "@/app/atoms/userAtom";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
 export default function Blog({blogId} : {blogId: string}) {
     // Assume blogData contains the content fetched from the backend
-    const [blog, setBlog] = useState({title : "", content: ""});
+    const [blog, setBlog] = useState({title : "", content: "", author: {name: ""}});
+    const [user, setUser] = useRecoilState(userAtom);
 
     async function fetchBlog(){
         const response = await getBlog(blogId);
         if(response) setBlog(response);
-        console.log(response);
+        // console.log(response);
     }
 
     useEffect(()=>{
@@ -22,7 +27,7 @@ export default function Blog({blogId} : {blogId: string}) {
                     {blog ? blog.title : "lorem"}
                 </div>
                 <div className="pt-4 text-xl">
-                    Author name
+                    { blog.author.name }
                 </div>
                 <div className="text-sm text-gray-800">
                     5 min read
@@ -36,7 +41,7 @@ export default function Blog({blogId} : {blogId: string}) {
                     </p>
                 </div>
                 <div className="font-semibold text-2xl">
-                    Written by Author 
+                    Written by { blog.author.name }
                 </div>
             </div>
         </div>

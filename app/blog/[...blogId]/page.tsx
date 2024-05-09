@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 export default function BlogPage( {params }: { params: { blogId: string[] } }) {
     // const router = useRouter();
     const blogId = params.blogId[0];
-    console.log(blogId);
+    // console.log(blogId);
 
     return (
         <div>

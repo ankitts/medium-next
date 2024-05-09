@@ -7,12 +7,12 @@ import { getBlogs } from "../actions/blog";
 
 export default function Blogs(){
 
-    const [blogs, setBlogs] = useState([{id:0, title: "", content: ""}]);
+    const [blogs, setBlogs] = useState([{id:0, title: "", content: "", author: {name: ""}}]);
 
     async function fetchBlogs() {
         const response = await getBlogs();
         if(response) setBlogs(response);
-        console.log(response)
+        // console.log(response)
     }
 
     useEffect(()=>{
@@ -23,7 +23,7 @@ export default function Blogs(){
  
     return <div className="py-10">
         {blogs.map((blog)=>(
-            <Link href={`/blog/${blog.id}`} ><Blogtile title={blog.title} content={blog.content}/></Link>
+            <Link href={`/blog/${blog.id}`} ><Blogtile key={blog.id} id={blog.id} title={blog.title} content={blog.content} author={blog.author.name}/></Link>
         ))}
     </div>
 }

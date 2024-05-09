@@ -1,15 +1,18 @@
 "use server"
 
-import { PrismaClient } from "@prisma/client";
+// import { Prismaprisma } from "@prisma/prisma";
+
+import prisma from "@/prisma/db";
+
 import jwt from "jsonwebtoken";
 
 const jwt_secret = "myjwtsecret";
 
 export async function signup(name: string, username: string, password: string) {
     
-    const client = new PrismaClient();
+    
 
-    const existingUser = await client.user.findUnique({
+    const existingUser = await prisma.user.findUnique({
         where: {
             username: username
         }
@@ -23,7 +26,7 @@ export async function signup(name: string, username: string, password: string) {
         }
     }
 
-    const user = await client.user.create({
+    const user = await prisma.user.create({
         data: {
             name: name,
             username: username,
@@ -37,6 +40,7 @@ export async function signup(name: string, username: string, password: string) {
 
     return {
         token: token,
+        id: user.id,
         status: 200,
         message: "signed up"
     }
@@ -44,8 +48,8 @@ export async function signup(name: string, username: string, password: string) {
 
 export async function signin(username: string, password: string) {
     
-    const client = new PrismaClient();
-    const user = await client.user.findUnique({
+    
+    const user = await prisma.user.findUnique({
         where: {
             username: username,
             password: password
@@ -66,7 +70,37 @@ export async function signin(username: string, password: string) {
 
     return {
         token: token,
+        name: user.name,
+        id: user.id,
         status: 200,
         message: "signed in"
     }
+}
+
+
+export async function getCurrentUser(token: string){
+    const payload = jwt.verify(token, jwt_secret) as { userId: number }
+    const userId = payload.userId
+    console.log("current User is" + userId)
+
+    const user = await prisma.user.findUnique({
+        where:{
+            id: userId
+        }
+    })
+    if(user) {
+        return {
+            id: user.id,
+            username: user.username,
+            name: user.name
+        }
+    }
+    else{
+        return {
+            id: 0,
+            username: "",
+            name: ""
+        }
+    }
+        
 }

@@ -1,20 +1,54 @@
 "use server"
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/prisma/db";
 
 export async function getBlogs(){
-    const client = new PrismaClient();
+    
 
-    const blogs = await client.blog.findMany();
-    console.log(blogs)
+    const blogs = await prisma.blog.findMany({
+        include: {
+            author: {
+                select: {
+                    name: true
+                }
+            }
+        }
+    });
+    // console.log(blogs[0])
+    return blogs;
+}
+
+export async function getMyBlogs(userId: number){
+    
+
+    const blogs = await prisma.blog.findMany({
+        include: {
+            author: {
+                select: {
+                    name: true
+                }
+            }
+        },
+        where: {
+            userId: userId
+        }
+    });
+    // console.log(blogs[0])
     return blogs;
 }
 
 export async function getBlog(blogId: string){
-    const client = new PrismaClient();
+    
     const id = parseInt(blogId);
 
-    const blog = await client.blog.findUnique({
+    const blog = await prisma.blog.findUnique({
+        include: {
+            author: {
+                select: {
+                    name: true
+                }
+            }
+        },
         where: {
             id: id
         }
@@ -24,15 +58,39 @@ export async function getBlog(blogId: string){
 }
 
 
-export async function writeBlog(title: string, content:string) {
-    const client = new PrismaClient();
+export async function writeBlog(title: string, content:string, userId: number) {
+    
 
-    const blog = await client.blog.create({
+    const blog = await prisma.blog.create({
         data:{
             title: title,
-            content: content
+            content: content,
+            userId: userId
         }
     })
 
     return blog;
+}
+
+
+export async function deleteBlog(blogId: number, userId: number){
+    
+
+    const blog = await prisma.blog.findUnique({
+        where: {
+            id: blogId
+        }
+    })
+
+    if(blog?.userId != userId) return false;
+
+
+    const deleteBlog = await prisma.blog.delete({
+        where: {
+            id: blogId,
+            userId: userId
+        }
+    })
+
+    return true;
 }

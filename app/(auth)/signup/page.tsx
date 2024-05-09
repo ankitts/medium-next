@@ -1,8 +1,12 @@
 "use client"
 
 import { signup } from "@/app/actions/user";
+import { userAtom } from "@/app/atoms/userAtom";
+import { Cinzel } from "next/font/google";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 
 export default function Signup(){
 
@@ -10,12 +14,24 @@ export default function Signup(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    // const [user, setUser] = useRecoilState(userAtom);
+
+    const router = useRouter();
+
     async function onclickHandler(){
+        // console.log("clicked")
         const response = await signup(name, username, password);
-        if(response.token){
-            localStorage.setItem("token", response.token)
+        // console.log("signed up")
+        if(response.token && response.id){
+            localStorage.setItem("token", response.token);
+            // setUser({
+            //     username: username,
+            //     name: name,
+            //     id: response.id
+            // })
+            router.push('/blogs')
         }
-        console.log(response);
+        // console.log(response);
     }
 
     return <div className="bg-gray-400 flex justify-center h-screen">
