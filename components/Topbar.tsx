@@ -23,7 +23,7 @@ export default function Topbar() {
 
   return (
     <div className="bg-black p-4 flex justify-between">
-      <div className="text-white text-lg">
+      <div className="text-white text-2xl">
         <Link href="/blogs">CodeBlogs</Link>
       </div>
       <div className="flex">

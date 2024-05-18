@@ -22,12 +22,12 @@ export default function WriteBlog() {
 
   return (
     <div className="flex justify-center pt-20 pb-10">
-      <div className="w-1/2 bg-slate-400 border-2 border-gray-400 p-6 rounded-md">
-        <div className="text-3xl font-bold">
+      <div className="w-1/2 bg-black p-6 rounded-md">
+        <div className="text-3xl text-white font-bold">
             Write a blog...
         </div>
         <div className="my-4 text-left">
-          <div className="text-black text-xl mb-1">Title</div>
+          <div className="text-white text-xl mb-1">Title</div>
           <div>
             <input
               onChange={(e)=>setTitle(e.target.value)}
@@ -38,7 +38,7 @@ export default function WriteBlog() {
           </div>
         </div>
         <div className="my-4 text-left">
-          <div className="text-black text-xl mb-1">Content</div>
+          <div className="text-white text-xl mb-1">Content</div>
           <div>
             <textarea
               onChange={(e)=>setContent(e.target.value)}
@@ -48,7 +48,7 @@ export default function WriteBlog() {
           </div>
         </div>
         <div className="">
-            <button onClick={onclickHandler} className="w-full bg-black text-white hover:text-green-500 h-8 rounded-lg">Publish</button>
+            <button onClick={onclickHandler} className="w-full bg-white text-black hover:bg-green-500 h-8 rounded-lg">Publish</button>
         </div>
       </div>
     </div>
