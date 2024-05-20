@@ -10,8 +10,6 @@ const jwt_secret = "myjwtsecret";
 
 export async function signup(name: string, username: string, password: string) {
     
-    
-
     const existingUser = await prisma.user.findUnique({
         where: {
             username: username
@@ -34,16 +32,21 @@ export async function signup(name: string, username: string, password: string) {
         }
     });
 
-    const token = jwt.sign({
-        userId: user.id
-    }, jwt_secret)
-
     return {
-        token: token,
-        id: user.id,
-        status: 200,
-        message: "signed up"
+        user: user,
+        status: 200
     }
+
+    // const token = jwt.sign({
+    //     userId: user.id
+    // }, jwt_secret)
+
+    // return {
+    //     token: token,
+    //     id: user.id,
+    //     status: 200,
+    //     message: "signed up"
+    // }
 }
 
 export async function signin(username: string, password: string) {

@@ -12,7 +12,6 @@ export default function Blogs(){
     async function fetchBlogs() {
         const response = await getBlogs();
         if(response) setBlogs(response);
-        // console.log(response)
     }
 
     useEffect(()=>{
@@ -23,7 +22,7 @@ export default function Blogs(){
  
     return <div className="py-10">
         {blogs.map((blog)=>(
-            <Link href={`/blog/${blog.id}`} ><Blogtile key={blog.id} id={blog.id} title={blog.title} content={blog.content} author={blog.author.name}/></Link>
+            <Link href={`/blog/${blog.id}`} key={blog.id}><Blogtile  id={blog.id} title={blog.title} content={blog.content} author={blog.author.name}/></Link>
         ))}
     </div>
 }

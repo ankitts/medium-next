@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Topbar from "@/components/Topbar";
 import { RecoilRoot } from "recoil";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <RecoilRoot>
-        <body className={inter.className}>
-          {children}
-        </body>
+        <Providers>
+          <body className={inter.className}>
+            {children}
+          </body>
+        </Providers>
       </RecoilRoot>
     </html>
   );

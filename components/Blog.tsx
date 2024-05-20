@@ -2,17 +2,22 @@
 
 import { getBlog } from "@/app/actions/blog";
 import { userAtom } from "@/app/atoms/userAtom";
+import { time } from "console";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 export default function Blog({blogId} : {blogId: string}) {
     // Assume blogData contains the content fetched from the backend
     const [blog, setBlog] = useState({title : "", content: "", author: {name: ""}});
-    const [user, setUser] = useRecoilState(userAtom);
+    // const [user, setUser] = useRecoilState(userAtom);
+    const [readTime, setReadTime] = useState(1);
 
     async function fetchBlog(){
         const response = await getBlog(blogId);
-        if(response) setBlog(response);
+        if(response) {
+            setBlog(response);
+            setReadTime((t)=>Math.max(t, blog.content.length/10));
+        }
         // console.log(response);
     }
 
@@ -30,7 +35,7 @@ export default function Blog({blogId} : {blogId: string}) {
                     { blog.author.name }
                 </div>
                 <div className="text-sm text-gray-800">
-                    5 min read
+                    {readTime} min read
                 </div>
                 <div className="py-4 flex justify-center">
                     <img className="w-2/3" src="/vercel-logo.png" alt="" />

@@ -4,29 +4,33 @@ import Blogtile from "@/components/Blogtile";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getMyBlogs } from "../actions/blog";
-import { userAtom } from "../atoms/userAtom";
-import { useRecoilState } from "recoil";
+import { useSession } from "next-auth/react";
 
 export default function YourBlogs(){
 
     const [blogs, setBlogs] = useState([{id:0, title: "", content: "", author: {name: ""}}]);
-    const [user, setUser] = useRecoilState(userAtom);
-// 
-    async function fetchBlogs() {
-        console.log(user.id)
-        const response = await getMyBlogs(user.id);
-        if(response) setBlogs(response);
-        console.log(response)
-    }
+    const { data: session, status } = useSession();
 
+
+    async function fetchBlogs(userId: number) {
+        const response = await getMyBlogs(userId);
+        if(response) setBlogs(response);
+        else alert("Error fetching blogs")
+    }
     useEffect(()=>{
-        fetchBlogs();
-        
-    }, [blogs]);
+        if(session){
+            const userId = parseInt(session.user?.id);
+            fetchBlogs(userId);
+        } else if(status === "loading"){
+            // Session is being fetched
+        } else {
+            alert('You are not logged in.');
+        }
+    }, [session]);
  
     return <div className="py-10">
         {blogs.map((blog)=>(
-            <Link href={`/blog/${blog.id}`} ><Blogtile id={blog.id} title={blog.title} content={blog.content} author={blog.author.name}/></Link>
+            <Link href={`/blog/${blog.id}`} key={blog.id}><Blogtile id={blog.id} title={blog.title} content={blog.content} author={blog.author.name}/></Link>
         ))}
     </div>
 }

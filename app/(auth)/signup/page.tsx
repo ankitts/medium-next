@@ -2,6 +2,7 @@
 
 import { signup } from "@/app/actions/user";
 import { userAtom } from "@/app/atoms/userAtom";
+import { signIn } from "next-auth/react";
 import { Cinzel } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -14,24 +15,28 @@ export default function Signup(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    // const [user, setUser] = useRecoilState(userAtom);
-
     const router = useRouter();
 
     async function onclickHandler(){
-        // console.log("clicked")
-        const response = await signup(name, username, password);
-        // console.log("signed up")
-        if(response.token && response.id){
-            localStorage.setItem("token", response.token);
-            // setUser({
-            //     username: username,
-            //     name: name,
-            //     id: response.id
-            // })
-            router.push('/blogs')
+        const signupRes = await signup(name, username, password);
+        
+        if(signupRes.status==200){
+            const signinRes = await signIn("credentials",{
+                username: signupRes.user?.username,
+                password: signupRes.user?.password,
+                redirect: false
+            })
+            if(signinRes?.status==200){
+                console.log(signinRes);
+                router.push('/blogs');
+            }
+            else{
+                alert('Error while signing in!')
+            }
+        }   
+        else{
+            alert('Error while signing up!')
         }
-        // console.log(response);
     }
 
     return <div className="bg-gray-400 flex justify-center h-screen">

@@ -3,6 +3,7 @@
 import { signin } from "@/app/actions/user";
 import { userAtom } from "@/app/atoms/userAtom";
 import { log } from "console";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -14,23 +15,18 @@ export default function Login(){
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [user, setUser] = useRecoilState(userAtom);
 
     const router = useRouter();
 
     async function onclickHandler(){
-        const response = await signin(username, password);
-        if(response.token && response.name){
-            localStorage.setItem("token", response.token);
-            setUser({
-                username: username,
-                name: response.name,
-                id: response.id
-            })
-            console.log(`current user is ${username}`)
-            router.push('/blogs');
-        }
-        // console.log(response);
+        const response = await signIn("credentials",{
+            username: username,
+            password: password,
+            redirect: false
+        })
+        console.log("inside signin handler");
+        if(response?.status==200) router.push('/blogs')
+        else alert('Wrong Credentials');
     }
 
     return <div className="bg-gray-400 flex justify-center h-screen">

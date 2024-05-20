@@ -2,6 +2,7 @@
 
 import { writeBlog } from "@/app/actions/blog";
 import { userAtom } from "@/app/atoms/userAtom";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -10,14 +11,29 @@ export default function WriteBlog() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [user, setUser] = useRecoilState(userAtom);
+  // const [user, setUser] = useRecoilState(userAtom);
+  const session = useSession();
   const router = useRouter();
 
   async function onclickHandler(){
-    console.log(user.id);
-    const response = await writeBlog(title, content, user.id);
+
+    if(!title && !content){
+      alert("Title or Content cannot be empty");
+      return;
+    }
+
+    if(session.data){
+      const user = session.data.user;
+      console.log(user.id)
+      const id = parseInt(user?.id);
+      const response = await writeBlog(title, content, id);
+      router.push('/blogs');
+    }
+    else{
+      alert('You need to be logged in to publish your blog.')
+    }
     
-    router.push('/blogs');
+    
   }
 
   return (
