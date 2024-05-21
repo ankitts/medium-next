@@ -1,19 +1,18 @@
 "use client"
 
 import { deleteBlog } from "@/app/actions/blog"
-import { userAtom } from "@/app/atoms/userAtom"
 import { useSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
 
 export default function Blogtile({id, title, content, author}: {id: number, title: string, content: string, author: string}){
-    
-    // const [user, setUser] = useRecoilState(userAtom);
-    const session  = useSession();
+
+    const {data: session, status}  = useSession();
 
     async function deleteHandler(event: React.MouseEvent<HTMLButtonElement, MouseEvent>){
         event?.preventDefault();
-        if(session.data){
-            const userId = parseInt(session.data?.user.id);
+        if(session){
+            const user = session.user as {id: string, name: string}
+            const userId = parseInt(user.id);
             const response = await deleteBlog(id, userId);
             if(response){
                 alert("Blog Deleted");

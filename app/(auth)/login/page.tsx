@@ -1,15 +1,9 @@
 "use client"
 
-import { signin } from "@/app/actions/user";
-import { userAtom } from "@/app/atoms/userAtom";
-import { log } from "console";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
-
-
 
 export default function Login(){
 

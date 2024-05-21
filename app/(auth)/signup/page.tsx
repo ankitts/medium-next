@@ -1,13 +1,10 @@
 "use client"
 
 import { signup } from "@/app/actions/user";
-import { userAtom } from "@/app/atoms/userAtom";
 import { signIn } from "next-auth/react";
-import { Cinzel } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
 
 export default function Signup(){
 

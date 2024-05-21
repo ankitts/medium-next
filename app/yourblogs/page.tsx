@@ -19,7 +19,8 @@ export default function YourBlogs(){
     }
     useEffect(()=>{
         if(session){
-            const userId = parseInt(session.user?.id);
+            const user = session.user as {id: string, name: string};
+            const userId = parseInt(user.id);
             fetchBlogs(userId);
         } else if(status === "loading"){
             // Session is being fetched

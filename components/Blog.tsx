@@ -1,15 +1,10 @@
 "use client"
 
 import { getBlog } from "@/app/actions/blog";
-import { userAtom } from "@/app/atoms/userAtom";
-import { time } from "console";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 
 export default function Blog({blogId} : {blogId: string}) {
-    // Assume blogData contains the content fetched from the backend
     const [blog, setBlog] = useState({title : "", content: "", author: {name: ""}});
-    // const [user, setUser] = useRecoilState(userAtom);
     const [readTime, setReadTime] = useState(1);
 
     async function fetchBlog(){
@@ -18,7 +13,6 @@ export default function Blog({blogId} : {blogId: string}) {
             setBlog(response);
             setReadTime((t)=>Math.max(t, blog.content.length/10));
         }
-        // console.log(response);
     }
 
     useEffect(()=>{
