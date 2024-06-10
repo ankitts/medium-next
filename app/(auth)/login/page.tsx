@@ -1,5 +1,4 @@
 "use client"
-
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -52,7 +51,7 @@ export default function Login() {
                     Login
                 </button>
                 <div className="text-gray-700 text-center mt-6">
-                    Don't have an account?
+                    Don&apos;t have an account?
                     <Link href="/signup" className="text-indigo-500 hover:text-indigo-700 underline ml-2">
                         Create one!
                     </Link>
