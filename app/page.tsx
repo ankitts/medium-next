@@ -8,6 +8,9 @@ export default function Home() {
   return (
     <div className="bg-gray-800 flex justify-center items-center h-screen">
       <div className="flex flex-col justify-center">
+        <div className="text-center">
+          <h1 className="text-5xl font-semibold text-gray-100 mb-8">CodeBlogs</h1>
+        </div>
         <div className="mb-8">
           <Link href="/login">
             <div className="bg-white text-black w-80 h-12 text-center rounded-lg cursor-pointer hover:bg-gray-700 hover:text-white transition duration-300 flex justify-center items-center" onClick={() => router.push('/login')}>

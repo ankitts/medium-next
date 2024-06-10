@@ -34,7 +34,8 @@ export default function Signup() {
     }
 
     return (
-        <div className="bg-gray-800 flex justify-center items-center h-screen">
+        <div className="bg-gray-800 flex flex-col justify-center items-center h-screen">
+            <h1 className="text-5xl font-semibold text-gray-100 mb-8">CodeBlogs</h1>
             <div className="flex flex-col justify-center bg-white shadow-md rounded-lg p-8 w-96">
                 <div className="text-3xl mb-8 text-center text-gray-800 font-semibold">
                     Create an Account

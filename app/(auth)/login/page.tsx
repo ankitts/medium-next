@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,7 +22,8 @@ export default function Login() {
     }
 
     return (
-        <div className="bg-gray-800 flex justify-center items-center h-screen">
+        <div className="bg-gray-800 flex flex-col justify-center items-center h-screen">
+            <h1 className="text-5xl font-semibold text-gray-100 mb-8">CodeBlogs</h1>
             <div className="flex flex-col justify-center bg-white shadow-2xl rounded-lg p-8 w-96">
                 <div className="text-3xl mb-8 text-center text-gray-800 font-semibold">
                     Login
