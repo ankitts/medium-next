@@ -1,59 +1,56 @@
-"use client"
-
-import { deleteBlog } from "@/app/actions/blog"
+import { deleteBlog } from "@/app/actions/blog";
 import { useSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
+import { useState } from "react";
 
-export default function Blogtile({id, title, content, author}: {id: number, title: string, content: string, author: string}){
+export default function Blogtile({ id, title, content, author }: { id: number; title: string; content: string; author: string }) {
+    const { data: session, status } = useSession();
+    const [showFullContent, setShowFullContent] = useState(false);
 
-    const {data: session, status}  = useSession();
-
-    async function deleteHandler(event: React.MouseEvent<HTMLButtonElement, MouseEvent>){
+    async function deleteHandler(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         event?.preventDefault();
-        if(session){
-            const user = session.user as {id: string, name: string}
+        if (session) {
+            const user = session.user as { id: string; name: string };
             const userId = parseInt(user.id);
             const response = await deleteBlog(id, userId);
-            if(response){
+            if (response) {
                 alert("Blog Deleted");
                 window.location.reload();
+            } else {
+                alert("You can delete only your blog.");
             }
-            else{
-                alert("You can delete only your blog.")
-            }
+        } else {
+            alert("You need to be logged in to delete any blog.");
         }
-        else{
-            alert("You need to be logged in to delete any blog.")
-        }  
     }
-    
-    return <div className="bg-white flex justify-center mt-6">
-        <div className="flex justify-center bg-white w-5/6 h-56 rounded-md p-4 border-2 border-gray-300">
-            <div className="mr-4 w-1/6">
-                <img className="h-full rounded-md" src="/vercel-logo.png" alt="no image" />
-            </div>
-            <div className="w-5/6">
-                <div className="flex justify-between">
-                    <div className="text-3xl font-bold">
-                        {title}
-                    </div>
-                    <div>
-                        <button onClick={deleteHandler} className="p-2 rounded-md bg-black text-white border-gray-500 border-2 hover:bg-red-500 ">Delete</button>
-                    </div>
+
+    return (
+        <div className="bg-white rounded-md shadow-md p-4 my-6">
+            <div className="flex items-center">
+                <div className="mr-4 w-1/6">
+                    <img className="h-full rounded-md" src="/vercel-logo.png" alt="no image" />
                 </div>
-                <div className="flex justify-between text-gray-800 pr-4">
-                    <div>
-                        {author}
+                <div className="w-5/6">
+                    <div className="flex justify-between mb-4">
+                        <h2 className="text-xl font-bold">{title}</h2>
+                        {session && (
+                            <button onClick={deleteHandler} className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">
+                                Delete
+                            </button>
+                        )}
                     </div>
-                    <div>
-                        5 min read
-                    
-                </div>
-                </div>
-                <div className="mt-4">
-                    {content.slice(0, 500)}
+                    <div className="text-gray-800 mb-4">{author}</div>
+                    <div className="text-gray-700">{showFullContent ? content : content.slice(0, 500)}</div>
+                    {content.length > 500 && (
+                        <button
+                            onClick={() => setShowFullContent(!showFullContent)}
+                            className="text-indigo-600 mt-2 focus:outline-none hover:text-indigo-800"
+                        >
+                            {showFullContent ? "Show less" : "Read more"}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
-    </div>
+    );
 }

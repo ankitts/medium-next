@@ -6,69 +6,79 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function Signup(){
-
+export default function Signup() {
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const router = useRouter();
 
-    async function onclickHandler(){
+    async function onClickHandler() {
         const signupRes = await signup(name, username, password);
         
-        if(signupRes.status==200){
-            const signinRes = await signIn("credentials",{
+        if (signupRes.status === 200) {
+            const signinRes = await signIn("credentials", {
                 username: signupRes.user?.username,
                 password: signupRes.user?.password,
-                redirect: false
-            })
-            if(signinRes?.status==200){
+                redirect: false,
+            });
+            if (signinRes?.status === 200) {
                 console.log(signinRes);
                 router.push('/blogs');
+            } else {
+                alert('Error while signing in!');
             }
-            else{
-                alert('Error while signing in!')
-            }
-        }   
-        else{
-            alert('Error while signing up!')
+        } else {
+            alert('Error while signing up!');
         }
     }
 
-    return <div className="bg-gray-400 flex justify-center h-screen">
-        <div className="flex flex-col justify-center">
-            <div className="bg-black w-80 h-max text-center rounded-lg p-4 ">
-                <div className="text-2xl my-4 text-white">
-                    Create an account.
+    return (
+        <div className="bg-gray-800 flex justify-center items-center h-screen">
+            <div className="flex flex-col justify-center bg-white shadow-md rounded-lg p-8 w-96">
+                <div className="text-3xl mb-8 text-center text-gray-800 font-semibold">
+                    Create an Account
                 </div>
-                <div className="my-4 text-left">
-                    <div className="text-white">Name</div>
-                    <div>
-                        <input onChange={(e)=>setName(e.target.value)} className="rounded-sm w-full h-8 pl-1" type="text" placeholder="John Doe"></input>
-                    </div>
+                <div className="mb-6">
+                    <label className="block text-gray-700 font-medium mb-2">Name</label>
+                    <input 
+                        onChange={(e) => setName(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" 
+                        type="text" 
+                        placeholder="John Doe" 
+                    />
                 </div>
-                <div className="my-4 text-left">
-                    <div className="text-white">Username</div>
-                    <div>
-                        <input onChange={(e)=>setUsername(e.target.value)} className="rounded-sm w-full h-8 pl-1" type="text" placeholder="johndoe@example.com"></input>
-                    </div>
+                <div className="mb-6">
+                    <label className="block text-gray-700 font-medium mb-2">Username</label>
+                    <input 
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" 
+                        type="text" 
+                        placeholder="johndoe@example.com" 
+                    />
                 </div>
-                <div className="my-4 text-left">
-                    <div className="text-white">Password</div>
-                    <div>
-                        <input onChange={(e)=>setPassword(e.target.value)}  className="rounded-sm w-full h-8 pl-1" type="text" placeholder="123456"></input>
-                    </div>
+                <div className="mb-8">
+                    <label className="block text-gray-700 font-medium mb-2">Password</label>
+                    <input 
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" 
+                        type="password" 
+                        placeholder="Enter your password" 
+                    />
                 </div>
-                <div className="my-4">
-                    <button onClick={onclickHandler} className="bg-gray-400 hover:bg-gray-700 w-72 rounded-md h-8">Signup</button>
-                </div>
-                <div className="text-white">
+                <button 
+                    onClick={onClickHandler}
+                    className="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition duration-200"
+                >
+                    Signup
+                </button>
+                <div className="text-gray-700 text-center mt-6">
                     Already have an account?
-                    <Link href="/login" className="ml-2 hover:text-green-500 underline"> Sign in</Link>
+                    <Link href="/login" className="text-indigo-500 hover:text-indigo-700 underline ml-2">
+                        Sign in
+                    </Link>
                 </div>
             </div>
-            
         </div>
-    </div>
+    );
 }
